@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Produk</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .product-card {
+        height: 100%;
+      }
+      .product-card img {
+        height: 200px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-5">
+      <h1 class="text-center mb-4">Daftar Produk</h1>
+
+      <!-- Search and Filter Section -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control"
+            placeholder="Cari produk..."
+          />
+        </div>
+        <div class="col-md-6">
+          <select id="priceFilter" class="form-select">
+            <option value="">Urutkan berdasarkan Harga</option>
+            <option value="lowest">Harga Terendah ke Tertinggi</option>
+            <option value="highest">Harga Tertinggi ke Terendah</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="row" id="productContainer">
+        <!-- Products will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Sample product data
+      const products = [
+        {
+          id: 1,
+          name: "Smartphone X",
+          description:
+            "Smartphone terbaru dengan fitur canggih dan kamera berperforma tinggi",
+          price: 899.99,
+          image:
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60",
+        },
+        {
+          id: 2,
+          name: "Laptop Pro",
+          description:
+            "Laptop bertenaga untuk profesional dengan spesifikasi tinggi",
+          price: 1299.99,
+          image:
+            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&auto=format&fit=crop&q=60",
+        },
+        {
+          id: 3,
+          name: "Earbuds Nirkabel",
+          description:
+            "Earbuds nirkabel premium dengan fitur pembatalan kebisingan",
+          price: 199.99,
+          image:
+            "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=500&auto=format&fit=crop&q=60",
+        },
+        {
+          id: 4,
+          name: "Jam Tangan Pintar",
+          description: "Jam tangan pintar dengan fitur pemantauan kesehatan",
+          price: 299.99,
+          image:
+            "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&auto=format&fit=crop&q=60",
+        },
+        {
+          id: 5,
+          name: "Konsol Game",
+          description: "Konsol game generasi terbaru dengan dukungan 4K",
+          price: 499.99,
+          image:
+            "https://images.unsplash.com/photo-1486401899868-0e435ed85128?w=500&auto=format&fit=crop&q=60",
+        },
+        {
+          id: 6,
+          name: "Tablet Ultra",
+          description: "Tablet tipis dan bertenaga untuk bekerja dan hiburan",
+          price: 699.99,
+          image:
+            "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&auto=format&fit=crop&q=60",
+        },
+      ];
+
+      // Function to display products
+      function displayProducts(productsToShow) {
+        const container = document.getElementById("productContainer");
+        container.innerHTML = "";
+
+        productsToShow.forEach((product) => {
+          const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card product-card">
+                            <img src="${
+                              product.image
+                            }" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text"><strong>Harga: Rp ${product.price.toLocaleString(
+                                  "id-ID"
+                                )}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+          container.innerHTML += productCard;
+        });
+      }
+
+      // Function to filter products
+      function filterProducts() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const priceFilter = document.getElementById("priceFilter").value;
+
+        let filteredProducts = products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.description.toLowerCase().includes(searchTerm)
+        );
+
+        if (priceFilter === "lowest") {
+          filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (priceFilter === "highest") {
+          filteredProducts.sort((a, b) => b.price - a.price);
+        }
+
+        displayProducts(filteredProducts);
+      }
+
+      // Event listeners
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", filterProducts);
+      document
+        .getElementById("priceFilter")
+        .addEventListener("change", filterProducts);
+
+      // Initial display
+      displayProducts(products);
+    </script>
+  </body>
+</html>
